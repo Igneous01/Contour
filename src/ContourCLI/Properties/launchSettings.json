@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ContourCLI": {
+      "commandName": "Project",
+      "commandLineArgs": "transform -p PackageName -d \"C:\\Program Files\\Microsoft\\ms.exe\""
+    }
+  }
+}
