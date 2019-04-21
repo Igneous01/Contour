@@ -95,6 +95,11 @@ namespace LiteDBPrototype
             store.WEBAPP.SETTINGS.Prod = new ExpandoObject();
             store.WEBAPP.NEW = new ExpandoObject();
             store.WEBAPP.SECRET = new ExpandoObject();
+            store.WEBAPP.DELETE = new ExpandoObject();
+            store.WEBAPP.DELETE.A = "32";
+            store.WEBAPP.DELETE.B = "123123";
+            store.WEBAPP.DELETE.C = "135135";
+            store.WEBAPP.DELETE.D = "346346346";
             store.SomeProperty = "42 is life";
 
             store.DATABASE.MySQL.Test.__DATABASE = "localhost:8500;dzalewski;password;kidb";
@@ -120,6 +125,8 @@ namespace LiteDBPrototype
             store2.MoveProperty("DATABASE.Redis", "WEBAPP.NEW");
             store2.MoveProperty("WEBAPP.SETTINGS.Test.__VERSION", "DATABASE.MySQL.Prod");
             store2.MoveProperty("WEBAPP.SETTINGS.Prod.*", "WEBAPP.SECRET");
+            store2.DeleteProperty("WEBAPP.DELETE.*");
+            store2.DeleteProperty("WEBAPP.DELETE");
 
             //JToken t1 = store2.SelectToken("DATABASE.Redis").Parent;
 
