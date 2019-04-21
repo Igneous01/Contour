@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ContourCore
 {
@@ -53,8 +54,85 @@ namespace ContourCore
                     throw new Exception($"Could not find property with Json path {path}");
 
                 results.ElementAt(i).Parent.Remove();
+            }           
+        }
+
+        public static void CreateProperty(this JObject jObject, string path, object value)
+        {
+            Regex regex = new Regex(@"[\[\]\\\/*]");
+            if (regex.Match(path).Success)
+                throw new Exception($"Illegal path supplied - {path} is not valid");
+
+            string[] properties = path.Split(".");
+            JObject innerJObject = jObject;
+
+            foreach (string p in properties)
+                innerJObject = GetOrCreateProperty(innerJObject, p);
+
+            (innerJObject.Parent as JProperty).Value = JToken.FromObject(value);
+        }
+
+        public static IEnumerable<JToken> FindAllProperties(this JObject jObject)
+        {
+            return jObject.Descendants()
+                        .OfType<JProperty>()
+                        .Where(p => IsJPropertyValidType(p))
+                        .Select(p => p);
+        }
+
+        public static IEnumerable<JToken> FindAllProperties(this JObject jObject, string path)
+        {
+            var result1 = jObject.SelectTokens(path)
+                        .Where(t => t is JObject)
+                        .Cast<JObject>()
+                        .Descendants()
+                        .OfType<JProperty>()
+                        .Where(p => IsJPropertyValidType(p))
+                        .Select(p => p);
+
+            var result2 = jObject.SelectTokens(path)
+                        .Select(p => p.Parent)
+                        .OfType<JProperty>()
+                        .Where(p => IsJPropertyValidType(p))
+                        .Select(p => p);
+
+            return result1.Concat(result2);
+        }
+
+        private static bool IsJPropertyValidType(JProperty jProperty)
+        {
+            IEnumerable<JTokenType> ValidTypes = new List<JTokenType>()
+                {
+                    JTokenType.String,
+                    JTokenType.Integer,
+                    JTokenType.Boolean,
+                    JTokenType.Bytes,
+                    JTokenType.Date,
+                    JTokenType.Float,
+                    JTokenType.Guid,
+                    JTokenType.TimeSpan,
+                    JTokenType.Uri
+                };
+
+            return ValidTypes.Any(jt => jt == jProperty.Value.Type);
+        }
+
+        private static JObject GetOrCreateProperty(JObject jObject, string property)
+        {
+            JToken jt = jObject[property];
+
+            if (jt != null)
+            {
+                if (jt is JObject)
+                    return (JObject)jt;
+                else
+                    return jObject;
             }
-                
+            else
+            {
+                jObject.Add(property, new JObject());
+                return (JObject)jObject[property];
+            }
         }
 
         private static void MoveJsonProperty(JToken destToken, object sourceTokens, string destPath)
