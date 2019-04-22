@@ -1,0 +1,59 @@
+{
+	"DATABASE": {
+		"REDIS": {
+			"TEST": {
+				"REDIS_CONNECT": "localhost:42134"
+			},
+			"PRODUCTION": {
+				"REDIS_CONNECT": "localhost:18365"
+			}
+		},
+		"MYSQL": {
+			"TEST": {
+				"MYSQL_CONNECT": "Server=127.0.0.1; Database=ki-test; Uid=KITestAcc; Pwd=test;"
+			},
+			"PRODUCTION": {
+				"MYSQL_CONNECT": "Server=127.0.0.1; Database=ki; Uid=KIAcc; Pwd=prod;"
+			}
+		}
+	},
+	"KI": {
+		"TEST": {
+			"RedisEnvironmentKey": "KITest",
+			"VERSION": "0.9",
+			"KIClientVersion": "0.9.32",
+			"KIClientGUID": "AAAA-BBBB-CCCC-DDDD-0.32"
+		},
+		"PRODUCTION": {
+			"RedisEnvironmentKey": "KI",
+			"VERSION": "0.7",
+			"KIClientVersion": "0.7.14",
+			"KIClientGUID": "AAAA-BBBB-CCCC-DDDD-0.7.14"	
+		},		
+		"WEBAPP": {
+			"RedisKeyCapturePoint": "CP",
+			"RedisKeyDepot": "Depot",
+			"RedisKeySideMission": "SM",
+			"RedisKeyChat": "Chat"
+		},
+		"TCPSERVER": {
+			"TEST": {
+				"PORT": 9983,
+				"IP": "158.69.193.117"
+			},
+			"PRODUCTION": {
+				"PORT": 9985,
+				"IP": "158.69.193.117"
+			}
+		}
+	},
+	"CI": {
+		"TCPSERVER": {
+			"CONFIG_PATH": "TAWKI_TCPServer\\bin\\Debug"
+		},
+		"DATABASE": {
+			"UPGRADE_PATH": "SQL\\Install\\ki-upgrade.sql",
+			"CODE_PATH": "SQL\\Install\\ki-code.sql"
+		}
+	}
+}

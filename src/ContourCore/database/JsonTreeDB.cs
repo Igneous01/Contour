@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ContourCore.database
 {
-    class JsonTreeDB
+    public class JsonTreeDB
     {
         public string StorePath { get; private set; }
         public JObject Store { get; private set; }

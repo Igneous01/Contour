@@ -1,0 +1,25 @@
+<Config>
+	<DBConnect>${MYSQL_CONNECT}</DBConnect>
+	<RedisDBConnect>${REDIS_CONNECT}</RedisDBConnect>
+	<RedisEnvironmentKey>${RedisEnvironmentKey}</RedisEnvironmentKey>
+	<RedisActionKeys>
+		<Pair Action="AddOrUpdateCapturePoint" RedisKey="${RedisKeyCapturePoint}" RedisAction="HSET" />
+		<Pair Action="AddOrUpdateDepot" RedisKey="${RedisKeyDepot}" RedisAction="HSET" />
+		<Pair Action="AddOrUpdateSideMission" RedisKey="${RedisKeySideMission}" RedisAction="HSET" />
+		<Pair Action="AddOrUpdateChat" RedisKey="${RedisKeyChat}" RedisAction="RPUSH" />
+		<Pair Action="RemoveSideMission" RedisKey="${RedisKeySideMission}" RedisAction="HDEL" />
+	</RedisActionKeys>
+	<Throttle>
+		<Action Name="AddOrUpdateCapturePoint" AveragePerSecondLimit="5" />
+		<Action Name="AddOrUpdateDepot" AveragePerSecondLimit="5" />
+		<Action Name="AddOrUpdateSideMission" AveragePerSecondLimit="5" />
+		<Action Name="AddOrUpdateChat" AveragePerSecondLimit="5" />
+		<Action Name="SendHeartbeat" AveragePerSecondLimit="1" />
+	</Throttle>
+	<SupportedHTML>p,h1,h2,h3,h4,h5,h6,br,b,strong,i,em,mark,small,del,ins,sub,sup,ul,li</SupportedHTML>
+	<Port>${PORT}</Port>
+	<MaxConnections>4</MaxConnections>
+	<WhiteList>192.168.1.254;::ffff:127.0.0.1</WhiteList>
+	<Version>${VERSION}</Version>
+	<VersionKey>${KIClientGUID}</VersionKey>
+</Config>

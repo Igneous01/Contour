@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using ContourCLI.domain;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace ContourCLI
 {
@@ -9,20 +9,18 @@ namespace ContourCLI
     {
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<TransformCommand>(args)
-                .WithParsed<TransformCommand>(action =>
+            Parser.Default.ParseArguments<TransformCommand, AddStoreCommand, DeleteStoreCommand, MoveStoreCommand, GetStoreCommand, AddPackageCommand, DeletePackageCommand, GetPackageCommand>(args)
+                .WithParsed<IShellCommand>(action =>
                 {
-                    Console.WriteLine($"File: {action.File}");
-                    Console.WriteLine($"DestinationPath: {action.DestinationPath}");
-                    Console.WriteLine($"Package: {action.Package}");
-                })
-                .WithNotParsed<TransformCommand>(action =>
-                {
-                    foreach (Error err in action)
-                        Console.WriteLine(err.ToString());
-
-                    Console.WriteLine(action.ToString());
+                    action.Execute();
                 });
+            //.WithNotParsed<IShellCommand>((ParserResult<IShellCommand> result, IEnumerable<Error> Error) =>
+            //{
+            //    foreach (Error err in action)
+            //        Console.WriteLine(err.ToString());
+
+            //    Console.WriteLine(action.ToString());
+            //});
         }
     }
 }
