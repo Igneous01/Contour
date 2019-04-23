@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContourCLI.domain
+namespace ContourCLI.Actions
 {
     [Verb("get-package", HelpText = "Get defined package")]
     class GetPackageCommand : IShellCommand
@@ -20,9 +20,9 @@ namespace ContourCLI.domain
             {
                 JsonTreeDB db = new JsonTreeDB(GlobalConfig.PACKAGE);             
                 Console.WriteLine($"Results for {Path} :");
-                JToken results = db.Store.SelectToken(Path);
+                JToken results = db.Store.SelectToken(Path).Parent;
                 if (results != null)
-                    Console.WriteLine($"{results.Path}: {results}");
+                    Console.WriteLine($"{results.Path}: {(results as JProperty)?.Value}");
                 else
                     Console.WriteLine("No Results");
             }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContourCLI.domain
+namespace ContourCLI.Actions
 {
     interface IShellCommand
     {

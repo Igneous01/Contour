@@ -2,7 +2,7 @@
   "profiles": {
     "ContourCLI": {
       "commandName": "Project",
-      "commandLineArgs": "transform -o KI.TEST -d .\\sample.txt -t .\\sample-template.txt"
+      "commandLineArgs": "get-package -p KIPROD"
     }
   }
 }

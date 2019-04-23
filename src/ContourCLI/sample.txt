@@ -1,13 +1,13 @@
 <Config>
-	<DBConnect>${MYSQL_CONNECT}</DBConnect>
-	<RedisDBConnect>${REDIS_CONNECT}</RedisDBConnect>
-	<RedisEnvironmentKey>KITest</RedisEnvironmentKey>
+	<DBConnect>Server=127.0.0.1; Database=ki; Uid=KIAcc; Pwd=prod;</DBConnect>
+	<RedisDBConnect>localhost:18365</RedisDBConnect>
+	<RedisEnvironmentKey>KI</RedisEnvironmentKey>
 	<RedisActionKeys>
-		<Pair Action="AddOrUpdateCapturePoint" RedisKey="${RedisKeyCapturePoint}" RedisAction="HSET" />
-		<Pair Action="AddOrUpdateDepot" RedisKey="${RedisKeyDepot}" RedisAction="HSET" />
-		<Pair Action="AddOrUpdateSideMission" RedisKey="${RedisKeySideMission}" RedisAction="HSET" />
-		<Pair Action="AddOrUpdateChat" RedisKey="${RedisKeyChat}" RedisAction="RPUSH" />
-		<Pair Action="RemoveSideMission" RedisKey="${RedisKeySideMission}" RedisAction="HDEL" />
+		<Pair Action="AddOrUpdateCapturePoint" RedisKey="CP" RedisAction="HSET" />
+		<Pair Action="AddOrUpdateDepot" RedisKey="Depot" RedisAction="HSET" />
+		<Pair Action="AddOrUpdateSideMission" RedisKey="SM" RedisAction="HSET" />
+		<Pair Action="AddOrUpdateChat" RedisKey="Chat" RedisAction="RPUSH" />
+		<Pair Action="RemoveSideMission" RedisKey="SM" RedisAction="HDEL" />
 	</RedisActionKeys>
 	<Throttle>
 		<Action Name="AddOrUpdateCapturePoint" AveragePerSecondLimit="5" />
@@ -17,9 +17,9 @@
 		<Action Name="SendHeartbeat" AveragePerSecondLimit="1" />
 	</Throttle>
 	<SupportedHTML>p,h1,h2,h3,h4,h5,h6,br,b,strong,i,em,mark,small,del,ins,sub,sup,ul,li</SupportedHTML>
-	<Port>${PORT}</Port>
+	<Port>9985</Port>
 	<MaxConnections>4</MaxConnections>
 	<WhiteList>192.168.1.254;::ffff:127.0.0.1</WhiteList>
-	<Version>0.9</Version>
-	<VersionKey>AAAA-BBBB-CCCC-DDDD-0.32</VersionKey>
+	<Version>0.7</Version>
+	<VersionKey>AAAA-BBBB-CCCC-DDDD-0.7.14</VersionKey>
 </Config>

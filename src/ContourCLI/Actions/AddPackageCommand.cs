@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ContourCLI.domain
+namespace ContourCLI.Actions
 {
     [Verb("add-package", HelpText = "Add or Update configuration package")]
     class AddPackageCommand : IShellCommand

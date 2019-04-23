@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ContourCLI.domain
+namespace ContourCLI.Actions
 {
     [Verb("get-store", HelpText = "Get configuration value from store")]
     class GetStoreCommand : IShellCommand
@@ -25,7 +25,7 @@ namespace ContourCLI.domain
                 if (results.ToList().Count == 0)
                     Console.WriteLine("No results");
                 foreach(JToken t in results)
-                    Console.WriteLine($"{t.Path}: {t}");
+                    Console.WriteLine($"{t.Path}: {(t as JProperty)?.Value}");
             }
             catch (Exception ex)
             {

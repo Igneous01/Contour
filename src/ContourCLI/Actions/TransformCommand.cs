@@ -9,7 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ContourCLI.domain
+namespace ContourCLI.Actions
 {
     [Verb("transform", HelpText = "Transforms files using specified store from package, file, or wildcard")]
     class TransformCommand : IShellCommand
@@ -47,11 +47,14 @@ namespace ContourCLI.domain
                     JsonTreeDB configDB = new JsonTreeDB(GlobalConfig.STORE);
 
                     foreach (string p in paths)
-                    {    
-                        results.Concat(configDB.Store
+                    {
+                        IDictionary<string, object> r = configDB.Store
                                                 .FindAllProperties(p)
                                                 .Cast<JProperty>()
-                                                .ToDictionary(kvp => kvp.Name, kvp => kvp.Value.ToObject(typeof(Object))));
+                                                .ToDictionary(kvp => kvp.Name, kvp => kvp.Value.ToObject(typeof(Object)));
+                        results = results.Concat(r)
+                                    .ToLookup(x => x.Key, x => x.Value)
+                                    .ToDictionary(x => x.Key, g => g.First());
                     }
 
                     errorNotFound = $"Error in transform: Package {PackageName} not found";

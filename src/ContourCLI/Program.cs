@@ -1,5 +1,5 @@
 ﻿using CommandLine;
-using ContourCLI.domain;
+using ContourCLI.Actions;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +9,7 @@ namespace ContourCLI
     {
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<TransformCommand, AddStoreCommand, DeleteStoreCommand, MoveStoreCommand, GetStoreCommand, AddPackageCommand, DeletePackageCommand, GetPackageCommand>(args)
+            Parser.Default.ParseArguments<TransformCommand, AddStoreCommand, DeleteStoreCommand, MoveStoreCommand, GetStoreCommand, AddPackageCommand, DeletePackageCommand, GetPackageCommand, AddProfileCommand, SwitchProfileCommand>(args)
                 .WithParsed<IShellCommand>(action =>
                 {
                     action.Execute();

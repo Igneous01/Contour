@@ -5,24 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContourCLI.domain
+namespace ContourCLI.Actions
 {
-    [Verb("add-store", HelpText = "Add or updates a configuration item at the specified path with the specified value")]
-    class AddStoreCommand : IShellCommand
+    [Verb("delete-store", HelpText = "Deletes the configuration item at the specified path")]
+    class DeleteStoreCommand : IShellCommand
     {
         [Option('p', "path", Required = true, HelpText = "Specify path via Json path expression (ie. MyConfig.Production.$MyConfigItem)")]
         public string Path { set; get; }
-
-        [Option('v', "value", Required = true, HelpText = "Specify value")]
-        public string Value { set; get; }
 
         public int Execute()
         {
             try
             {
                 JsonTreeDB db = new JsonTreeDB(GlobalConfig.STORE);
-                db.Store.CreateProperty(Path, Value);
-                Console.WriteLine($"Added {Path} to store with value {Value}");
+                db.Store.DeleteProperty(Path);
+                Console.WriteLine($"Deleted {Path} from store");
                 db.Write();
             }
             catch (Exception ex)

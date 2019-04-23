@@ -8,5 +8,6 @@ namespace ContourCLI
     {
         public static string STORE = ".\\store.json";
         public static string PACKAGE = ".\\package.json";
+        public static string PROFILE = ".\\profile.json";
     }
 }

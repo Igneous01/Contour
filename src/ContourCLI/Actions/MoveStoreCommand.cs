@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContourCLI.domain
+namespace ContourCLI.Actions
 {
     [Verb("move-store", HelpText = "Move a configuration store to another location")]
     class MoveStoreCommand : IShellCommand

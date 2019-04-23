@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ContourCLI.domain
+namespace ContourCLI.Actions
 {
-    [Verb("delete-store", HelpText = "Deletes the configuration item at the specified path")]
-    class DeleteStoreCommand : IShellCommand
+    [Verb("delete-package", HelpText = "Deletes the specified package")]
+    class DeletePackageCommand : IShellCommand
     {
         [Option('p', "path", Required = true, HelpText = "Specify path via Json path expression (ie. MyConfig.Production.$MyConfigItem)")]
         public string Path { set; get; }
@@ -17,9 +17,9 @@ namespace ContourCLI.domain
         {
             try
             {
-                JsonTreeDB db = new JsonTreeDB(GlobalConfig.STORE);
+                JsonTreeDB db = new JsonTreeDB(GlobalConfig.PACKAGE);
                 db.Store.DeleteProperty(Path);
-                Console.WriteLine($"Deleted {Path} from store");
+                Console.WriteLine($"Deleted {Path} from package store");
                 db.Write();
             }
             catch (Exception ex)
