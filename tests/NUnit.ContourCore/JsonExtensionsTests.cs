@@ -13,7 +13,7 @@ using System.Linq;
 namespace NUnit.ContourCore
 {
     [TestFixture]
-    public class JsonExtensions
+    public class JsonExtensionsTests
     {
         private static JObject jsonStore;
 
