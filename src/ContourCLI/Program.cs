@@ -9,7 +9,7 @@ namespace ContourCLI
     {
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<TransformCommand, AddStoreCommand, DeleteStoreCommand, MoveStoreCommand, GetStoreCommand, AddPackageCommand, DeletePackageCommand, GetPackageCommand, AddProfileCommand, SwitchProfileCommand>(args)
+            Parser.Default.ParseArguments<TransformCommand, AddStoreCommand, DeleteStoreCommand, MoveStoreCommand, GetStoreCommand, AddPackageCommand, DeletePackageCommand, GetPackageCommand, AddProfileCommand, SwitchProfileCommand, DeleteProfileCommand>(args)
                 .WithParsed<IShellCommand>(action =>
                 {
                     action.Execute();

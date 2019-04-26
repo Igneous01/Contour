@@ -10,7 +10,7 @@ using System.Text;
 namespace ContourCLI.Actions
 {
     [Verb("add-package", HelpText = "Add or Update configuration package")]
-    class AddPackageCommand : AbstractCommand
+    public class AddPackageCommand : AbstractCommand
     {
         [Option('p', "path", Required = true, HelpText = "Name of configuration package")]
         public string Path { set; get; }
@@ -41,7 +41,7 @@ namespace ContourCLI.Actions
 
         private void ValidatePaths(IEnumerable<string> paths)
         {
-            JsonTreeDB storeDB = new JsonTreeDB(GlobalConfig.STORE);
+            IJsonTreeDB storeDB = GetFactory().Create(GlobalConfig.STORE);
             foreach(string p in paths)
             {
                 if (storeDB.Store.SelectTokens(p).ToList().Count == 0)

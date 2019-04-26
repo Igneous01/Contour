@@ -8,7 +8,7 @@ namespace ContourCore.database
     {
         public IJsonTreeDB Create(string path)
         {
-            return new MockJsonTreeDB();
+            return new MockJsonTreeDB(path);
         }
     }
 }

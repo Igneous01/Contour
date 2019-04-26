@@ -7,12 +7,15 @@ namespace ContourCore.database
 {
     public class MockJsonTreeDB : IJsonTreeDB
     {
-        public static JObject _Store;
+        public static Dictionary<string, JObject> _Store = new Dictionary<string, JObject>();
 
-        public JObject Store { get => _Store; private set => _Store = value; }
+        private string _Path;
 
-        public MockJsonTreeDB()
+        public JObject Store { get => _Store[_Path]; private set => _Store[_Path] = value; }
+
+        public MockJsonTreeDB(string path)
         {
+            _Path = path;
             Read();
         }
 
@@ -22,13 +25,13 @@ namespace ContourCore.database
 
         public void Read()
         {
-            if (Store == null)
-                Store = new JObject();
+            if (!_Store.ContainsKey(_Path))
+                _Store[_Path] = new JObject();
         }
 
         public static void Clear()
         {
-            _Store = new JObject();
+            _Store = new Dictionary<string, JObject>();
         }
     }
 }

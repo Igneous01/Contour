@@ -7,6 +7,7 @@ using ContourCLI.Actions;
 using ContourCore.database;
 using Newtonsoft.Json.Linq;
 using System;
+using ContourCLI;
 
 namespace NUnit.ContourCLI
 {
@@ -27,12 +28,12 @@ namespace NUnit.ContourCLI
         [TestCase("Property.Nested", "SomeValue.Cool")]
         [TestCase("Property.Nested.Inner", "Value")]
         [TestCase("Property.Nested.Deeper.Layer.Inner.Finer.More", "432.76135")]
-        public void AddSuccess(string path, string value)
+        public void AddStoreSuccess(string path, string value)
         {
             Command.Path = path;
             Command.Value = value;
             Assert.That(Command.Execute(), Is.EqualTo(0), "Command did not return 0 code");
-            AssertJsonTokenValueEqual(MockJsonTreeDB._Store, path, value);
+            AssertJsonTokenValueEqual(MockJsonTreeDB._Store[GlobalConfig.STORE], path, value);
         }
 
 
@@ -41,7 +42,7 @@ namespace NUnit.ContourCLI
         [TestCase("Property.Nested.", "SomeValue")]
         [TestCase("Property.*.Nested.Inner", "Value")]
         [TestCase("Property.[lol].Nested", "432.76135")]
-        public void InvalidJsonPathExpressionThrows(string path, string value)
+        public void AddStoreInvalidJsonPathExpressionFails(string path, string value)
         {
             Command.Path = path;
             Command.Value = value;
@@ -52,7 +53,7 @@ namespace NUnit.ContourCLI
         [TestCase("Property.Nested.Inner.Deeper", "SomeValue.Cool")]
         [TestCase("Property.Nested.Inner.Layer.NewForm", "SomeValue.Cool")]
         [TestCase("Property.NewPath.NewValue", "New Value")]
-        public void UpdateExistingPropertySuccess(string path, string value)
+        public void AddStoreUpdateExistingStorePropertySuccess(string path, string value)
         {
             JObject j = new JObject
             {
@@ -69,12 +70,12 @@ namespace NUnit.ContourCLI
             Command.Path = path;
             Command.Value = value;
             Assert.That(Command.Execute(), Is.EqualTo(0), "Command did not return 0 code");
-            AssertJsonTokenValueEqual(MockJsonTreeDB._Store, path, value);
+            AssertJsonTokenValueEqual(MockJsonTreeDB._Store[GlobalConfig.STORE], path, value);
         }
 
         [TestCase("Property.Inner", "Cool")]
         [TestCase("Property.Inner.Layer", "New Value")]
-        public void UpdateExistingPropertyOverwriteObjectToValue(string path, string value)
+        public void AddStoreUpdateExistingStorePropertyOverwriteObjectToValue(string path, string value)
         {
             JObject j = new JObject
             {
@@ -95,7 +96,7 @@ namespace NUnit.ContourCLI
             Command.Path = path;
             Command.Value = value;
             Assert.That(Command.Execute(), Is.EqualTo(0), "Command did not return 0 code");
-            AssertJsonTokenValueEqual(MockJsonTreeDB._Store, path, value);
+            AssertJsonTokenValueEqual(MockJsonTreeDB._Store[GlobalConfig.STORE], path, value);
         }
 
 
