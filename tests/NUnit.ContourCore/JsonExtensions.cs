@@ -127,13 +127,25 @@ namespace NUnit.ContourCore
             Assert.That(val, Is.EqualTo(JToken.FromObject(value)), $"property {path} value {val} does not equal {value}");
         }
 
+        [TestCase("DATABASE.MySQL.Test", "42")]
+        [TestCase("WEBAPP.SETTINGS.Test._VERSION.NEW.INNER", "My new value")]
+        public void CreatePropertyUpdateExistingSuccess(string path, string value)
+        {
+            jsonStore.CreateProperty(path, value);
+            JToken result = jsonStore.SelectToken(path);
+            Assert.That(result, Is.Not.Null, $"property does not exist at path {path} after create");
+            JToken val = (result.Parent as JProperty).Value;
+            Assert.That(val, Is.EqualTo(JToken.FromObject(value)), $"property {path} value {val} does not equal {value}");
+        }
+
         [TestCase("COOL.*.DIRECTORY._VAL")]
         [TestCase("DATABASE.[MySQL].Test.Nested.SomeVal")]
         [TestCase("\\.NEW.Test.SomeConfigVal")]
         [TestCase("WEBAPP./.Test.NewValue")]
+        [TestCase("WEBAPP.New.")]
         public void CreatePropertyFailure(string path)
         {
-            Assert.Throws<Exception>(() => jsonStore.CreateProperty(path, 55));
+            Assert.Throws<ArgumentException>(() => jsonStore.CreateProperty(path, 55));
         }
 
         [Test]

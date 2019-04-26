@@ -12,7 +12,7 @@ using System.Text;
 namespace ContourCLI.Actions
 {
     [Verb("transform", HelpText = "Transforms files using specified store from package, file, or wildcard")]
-    class TransformCommand : IShellCommand
+    class TransformCommand : AbstractCommand
     {
         [Option('p', "package", Required = false, HelpText = "Specify configuration package name")]
         public string PackageName { set; get; }
@@ -26,7 +26,7 @@ namespace ContourCLI.Actions
         [Option('t', "template", Required = true, HelpText = "Specify template file to use in transform")]
         public string TemplatePath { set; get; }
 
-        public int Execute()
+        public override int Execute()
         {
             if (ObjectPath == null && PackageName == null)
             {
@@ -41,10 +41,10 @@ namespace ContourCLI.Actions
 
                 if (PackageName != null)
                 {
-                    JsonTreeDB packageDB = new JsonTreeDB(GlobalConfig.PACKAGE);
+                    IJsonTreeDB packageDB = GetFactory().Create(GlobalConfig.PACKAGE);
                     IEnumerable <string> paths = (packageDB.Store.SelectToken(PackageName).Parent as JProperty).Value.ToObject<IEnumerable<string>>();
                     results = new Dictionary<string, object>();
-                    JsonTreeDB configDB = new JsonTreeDB(GlobalConfig.STORE);
+                    IJsonTreeDB configDB = GetFactory().Create(GlobalConfig.STORE);
 
                     foreach (string p in paths)
                     {
@@ -103,8 +103,8 @@ namespace ContourCLI.Actions
             get
             {
                 return new List<Example>() {
-                    new Example("Convert file to a trendy format", "transform -o MyConfig.Path.* -d Some\\Config\\Path\\my.config -t Some\\Config\\mytemplate.config"),
-                    new Example("Convert file to a trendy format", "transform --object MyConfig.Path.* --dest Some\\Config\\Path\\my.config --template Some\\Config\\mytemplate.config")
+                    new Example("Transform set of files", "transform -o MyConfig.Path.* -d Some\\Config\\Path\\my.config -t Some\\Config\\mytemplate.config"),
+                    new Example("Transform set of files", "transform --object MyConfig.Path.* --dest Some\\Config\\Path\\my.config --template Some\\Config\\mytemplate.config")
                 };
             }
         }

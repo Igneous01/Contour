@@ -8,7 +8,7 @@ using System.Text;
 namespace ContourCLI.Actions
 {
     [Verb("add-store", HelpText = "Add or updates a configuration item at the specified path with the specified value")]
-    class AddStoreCommand : IShellCommand
+    public class AddStoreCommand : AbstractCommand
     {
         [Option('p', "path", Required = true, HelpText = "Specify path via Json path expression (ie. MyConfig.Production.$MyConfigItem)")]
         public string Path { set; get; }
@@ -16,11 +16,11 @@ namespace ContourCLI.Actions
         [Option('v', "value", Required = true, HelpText = "Specify value")]
         public string Value { set; get; }
 
-        public int Execute()
+        public override int Execute()
         {
             try
             {
-                JsonTreeDB db = new JsonTreeDB(GlobalConfig.STORE);
+                IJsonTreeDB db = GetFactory().Create(GlobalConfig.STORE);
                 db.Store.CreateProperty(Path, Value);
                 Console.WriteLine($"Added {Path} to store with value {Value}");
                 db.Write();

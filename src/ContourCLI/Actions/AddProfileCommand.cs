@@ -12,7 +12,7 @@ using System.Text;
 namespace ContourCLI.Actions
 {
     [Verb("add-profile", HelpText = "Add or Update profile")]
-    class AddProfileCommand : IShellCommand
+    class AddProfileCommand : AbstractCommand
     {
         [Option('p', "profile", Required = true, HelpText = "Name of profile")]
         public string Profile { set; get; }
@@ -23,7 +23,7 @@ namespace ContourCLI.Actions
         [Option('c', "config", Separator = ';', Required = true, HelpText = "Path to configuration files - separate multiple using ;")]
         public IEnumerable<string> ConfigPaths { set; get; }
 
-        public int Execute()
+        public override int Execute()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace ContourCLI.Actions
                     ["Config"] = JToken.FromObject(ConfigPaths)
                 };
 
-                JsonTreeDB profileDB = new JsonTreeDB(GlobalConfig.PROFILE);
+                IJsonTreeDB profileDB = GetFactory().Create(GlobalConfig.PROFILE);
                 profileDB.Store.CreateProperty(Profile, profileValues);
                 Console.WriteLine($"Added Profile {Profile}");
                 profileDB.Write();

@@ -9,7 +9,7 @@ using System.Text;
 namespace ContourCLI.Actions
 {
     [Verb("switch-profile", HelpText = "Add or Update profile")]
-    class SwitchProfileCommand : IShellCommand
+    class SwitchProfileCommand : AbstractCommand
     {
         [Option('n', "name", Required = true, HelpText = "Name of profile")]
         public string Profile { set; get; }
@@ -17,11 +17,11 @@ namespace ContourCLI.Actions
         [Option('p', "package", Required = true, HelpText = "Name of package")]
         public string Package { set; get; }
 
-        public int Execute()
+        public override int Execute()
         {
             try
             {
-                JsonTreeDB profileDB = new JsonTreeDB(GlobalConfig.PROFILE);
+                IJsonTreeDB profileDB = GetFactory().Create(GlobalConfig.PROFILE);
                 JObject profile = profileDB.Store.SelectToken(Profile) as JObject;
                 TransformCommand cmd = new TransformCommand()
                 {

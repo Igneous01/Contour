@@ -8,16 +8,16 @@ using System.Text;
 namespace ContourCLI.Actions
 {
     [Verb("delete-store", HelpText = "Deletes the configuration item at the specified path")]
-    class DeleteStoreCommand : IShellCommand
+    class DeleteStoreCommand : AbstractCommand
     {
         [Option('p', "path", Required = true, HelpText = "Specify path via Json path expression (ie. MyConfig.Production.$MyConfigItem)")]
         public string Path { set; get; }
 
-        public int Execute()
+        public override int Execute()
         {
             try
             {
-                JsonTreeDB db = new JsonTreeDB(GlobalConfig.STORE);
+                IJsonTreeDB db = GetFactory().Create(GlobalConfig.STORE);
                 db.Store.DeleteProperty(Path);
                 Console.WriteLine($"Deleted {Path} from store");
                 db.Write();

@@ -1,13 +1,15 @@
-﻿// NUnit 3 tests
-// See documentation : https://github.com/nunit/docs/wiki/NUnit-Documentation
+﻿using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace NUnit.ContourCLI
 {
     [TestFixture]
-    public class TestClass
+    public class AddPackageCommandTests
     {
         [Test]
         public void TestMethod()

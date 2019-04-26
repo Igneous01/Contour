@@ -8,16 +8,16 @@ using System.Text;
 namespace ContourCLI.Actions
 {
     [Verb("delete-package", HelpText = "Deletes the specified package")]
-    class DeletePackageCommand : IShellCommand
+    class DeletePackageCommand : AbstractCommand
     {
         [Option('p', "path", Required = true, HelpText = "Specify path via Json path expression (ie. MyConfig.Production.$MyConfigItem)")]
         public string Path { set; get; }
 
-        public int Execute()
+        public override int Execute()
         {
             try
             {
-                JsonTreeDB db = new JsonTreeDB(GlobalConfig.PACKAGE);
+                IJsonTreeDB db = GetFactory().Create(GlobalConfig.PACKAGE);
                 db.Store.DeleteProperty(Path);
                 Console.WriteLine($"Deleted {Path} from package store");
                 db.Write();

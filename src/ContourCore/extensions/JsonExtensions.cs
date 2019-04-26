@@ -61,15 +61,22 @@ namespace ContourCore
         {
             Regex regex = new Regex(@"[\[\]\\\/*]");
             if (regex.Match(path).Success)
-                throw new Exception($"Illegal path supplied - {path} is not valid");
+                throw new ArgumentException($"Illegal path supplied - {path} is not valid");
 
             string[] properties = path.Split(".");
-            JObject innerJObject = jObject;
+
+            if (properties.Any(s => String.IsNullOrWhiteSpace(s)))
+                throw new ArgumentException($"Illegal path supplied - {path} is not valid");
+
+            JToken innerJObject = jObject;
 
             foreach (string p in properties)
                 innerJObject = GetOrCreateProperty(innerJObject, p);
 
-            (innerJObject.Parent as JProperty).Value = JToken.FromObject(value);
+            //if (!(innerJObject is JValue))
+                (innerJObject.Parent as JProperty).Value = JToken.FromObject(value);
+            //else
+            //    (innerJObject as JProperty).Value = JToken.FromObject(value);
         }
 
         public static IEnumerable<JToken> FindAllProperties(this JObject jObject)
@@ -117,22 +124,38 @@ namespace ContourCore
             return ValidTypes.Any(jt => jt == jProperty.Value.Type);
         }
 
-        private static JObject GetOrCreateProperty(JObject jObject, string property)
+        private static JToken GetOrCreateProperty(JToken jObject, string property)
         {
-            JToken jt = jObject[property];
-
-            if (jt != null)
+            if (jObject is JValue)
             {
-                if (jt is JObject)
-                    return (JObject)jt;
-                else
-                    return jObject;
+                JObject newValue = new JObject { { property, new JObject() } };
+                JProperty jProperty = jObject.Parent as JProperty;
+                jProperty.Value = JToken.FromObject(newValue);
+                return jProperty.Value[property];
             }
             else
             {
-                jObject.Add(property, new JObject());
-                return (JObject)jObject[property];
-            }
+                JToken jt = jObject[property];
+
+                if (jt != null)
+                    return jt;
+                else
+                {
+                    JProperty jProperty = jObject as JProperty;
+                    if (jProperty == null)
+                    {
+                        jObject[property] = new JObject();
+                        return jObject[property];
+                    }
+                    else
+                    {
+                        JObject newValue = new JObject { { property, new JObject() } };
+                        jProperty.Value = JToken.FromObject(newValue);
+                        return jProperty.Value[property];
+                    }
+                   
+                }
+            }         
         }
 
         private static void MoveJsonProperty(JToken destToken, object sourceTokens, string destPath)

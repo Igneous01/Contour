@@ -10,16 +10,16 @@ using System.Text;
 namespace ContourCLI.Actions
 {
     [Verb("get-store", HelpText = "Get configuration value from store")]
-    class GetStoreCommand : IShellCommand
+    class GetStoreCommand : AbstractCommand
     {
         [Option('p', "path", Required = true, HelpText = "Configuration store path")]
         public string Path { set; get; }
 
-        public int Execute()
+        public override int Execute()
         {
             try
             {
-                JsonTreeDB db = new JsonTreeDB(GlobalConfig.STORE);
+                IJsonTreeDB db = GetFactory().Create(GlobalConfig.STORE);
                 IEnumerable<JToken> results = db.Store.FindAllProperties(Path);
                 Console.WriteLine($"Results for {Path} :");
                 if (results.ToList().Count == 0)
