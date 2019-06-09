@@ -9,7 +9,7 @@ using System.Text;
 namespace ContourCLI.Actions
 {
     [Verb("get-package", HelpText = "Get defined package")]
-    class GetPackageCommand : AbstractCommand
+   public  class GetPackageCommand : AbstractCommand
     {
         [Option('p', "path", Required = true, HelpText = "Name of configuration package")]
         public string Path { set; get; }
@@ -20,7 +20,7 @@ namespace ContourCLI.Actions
             {
                 IJsonTreeDB db = GetFactory().Create(GlobalConfig.PACKAGE);             
                 Console.WriteLine($"Results for {Path} :");
-                JToken results = db.Store.SelectToken(Path).Parent;
+                JToken results = db.Store.SelectToken(Path)?.Parent;
                 if (results != null)
                     Console.WriteLine($"{results.Path}: {(results as JProperty)?.Value}");
                 else
