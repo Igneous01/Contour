@@ -23,6 +23,11 @@ namespace ContourCLI.Actions
             {
                 IJsonTreeDB profileDB = GetFactory().Create(GlobalConfig.PROFILE);
                 JObject profile = profileDB.Store.SelectToken(Profile) as JObject;
+                if (profile == null)
+                {
+                    Console.WriteLine($"Profile '{Profile}' not found.");
+                    return -1;
+                }
                 TransformCommand cmd = new TransformCommand()
                 {
                     PackageName = Package,
